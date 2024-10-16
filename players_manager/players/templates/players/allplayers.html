@@ -1,0 +1,11 @@
+<h1>Players</h1>
+<ul>
+  {% for player in players %}
+    <li>{{ player.name }} ({{ player.position }}, Age: {{ player.age }}) -
+      <a href="{% url 'player_update' player.id %}">Edit</a> |
+      <a href="{% url 'player_delete' player.id %}">Delete</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'player_create' %}">Add New Player</a>
