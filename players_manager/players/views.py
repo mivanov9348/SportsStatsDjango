@@ -1,11 +1,32 @@
+import random
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Player
+
+from .models import Player, Position,Team
 from .forms import PlayerForm
 
 # Create your views here.
 def allplayers(request):
-    players = Player.objects.all()
+    players = Player.objects.all().order_by('-id')
     return render(request,'players/allplayers.html',{'players':players})
+
+def add_random_player(request):
+    if request.method =='POST':
+        names = ['John', 'Paul', 'George', 'Ringo', 'Michael', 'Messi', 'Ivan', 'Ronaldo']
+        teams = Team.objects.all()
+        positions = Position.objects.all()
+
+        name = random.choice(names)
+        age = random.randint(18,40)
+        position = random.choice(positions)
+        team = random.choice(teams)
+
+        Player.objects.create(name=name,age=age,position=position, team=team)
+
+        return redirect('allplayers')
+
+    return redirect('allplayers')
 
 def createplayer(request):
     if request.method =='POST':

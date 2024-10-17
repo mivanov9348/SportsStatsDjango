@@ -1,11 +1,138 @@
-<h1>Players</h1>
-<ul>
-  {% for player in players %}
-    <li>{{ player.name }} ({{ player.position }}, Age: {{ player.age }}) -
-      <a href="{% url 'player_update' player.id %}">Edit</a> |
-      <a href="{% url 'player_delete' player.id %}">Delete</a>
-    </li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
 
-<a href="{% url 'player_create' %}">Add New Player</a>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .add-player-container {
+            text-align: center;
+            margin-bottom: 20px; /* Now it's above the player list */
+        }
+
+        .add-player-container a,
+        .add-player-container button {
+            background-color: #17a2b8;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 5px; /* Add space between buttons */
+            transition: background-color 0.3s ease;
+        }
+
+        .add-player-container a:hover,
+        .add-player-container button:hover {
+            background-color: #138496;
+        }
+
+        .player-list {
+            list-style: none;
+            padding: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .player-list li {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .player-list li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .player-info {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .player-actions a {
+            text-decoration: none;
+            color: #007bff;
+            margin-right: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .player-actions a:hover {
+            color: #0056b3;
+        }
+
+        .player-actions button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .player-actions button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .player-list li {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .player-actions {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Players</h1>
+    <a href="{% url 'transfer_players' %}">Transfer Players</a>
+
+
+    <!-- Buttons for adding players placed above the list -->
+    <div class="add-player-container">
+        <form method="POST" action="{% url 'add_random_player' %}">
+            {% csrf_token %}
+            <button type="submit">Add Random Player</button>
+        </form>
+
+        <a href="{% url 'player_create' %}">Add New Player</a>
+    </div>
+
+    <!-- Player list with newest first -->
+    <ul class="player-list">
+        {% for player in players %}
+            <li>
+                <div class="player-info">
+                    {{ player.name }} ({{ player.position.name }}, Age: {{ player.age }}), Team: {{ player.team }}
+                </div>
+                <div class="player-actions">
+                    <a href="{% url 'player_update' player.id %}">Edit</a> |
+                    <a href="{% url 'player_delete' player.id %}">Delete</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
